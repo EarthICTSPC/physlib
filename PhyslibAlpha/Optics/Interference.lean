@@ -13,9 +13,10 @@ public import Mathlib.Basic.Complex.Basic
 
 Basic identities for the interference of two complex optical field amplitudes.
 
-The results in this file are mathematical statements about complex amplitudes.
-They do not assume a particular waveguide, coupler, modulator, or detector
-implementation.
+This module formalizes mathematical identities for complex field amplitudes.
+It does not assume a particular waveguide, coupler, modulator, or detector
+implementation. Detector response, responsivity, loss, noise, and measurement
+semantics are treated separately in `Optics.Detection`.
 -/
 
 @[expose] public section
@@ -26,7 +27,7 @@ namespace Optics
 
 It is the real inner product `⟪b, a⟫_ℝ`, equivalently
 `Re (a * conj b)`. -/
-def opticalCrossTerm (a b : ℂ) : ℝ :=
+noncomputable def opticalCrossTerm (a b : ℂ) : ℝ :=
   ⟪b, a⟫_ℝ
 
 /-- The squared magnitude of a superposition of two complex fields equals
