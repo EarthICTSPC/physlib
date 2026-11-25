@@ -52,7 +52,7 @@
     },
     {
       "operation_id": "intensity_0",
-      "kind": "complex_interference_intensity",
+      "kind": "field_intensity",
       "operands": ["intf_0.out"],
       "result": "obs_0.intensity"
     }
