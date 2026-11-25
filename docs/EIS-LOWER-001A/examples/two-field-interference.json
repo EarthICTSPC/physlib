@@ -32,7 +32,10 @@
     {
       "node_id": "obs_0",
       "kind": "ideal_intensity_observation",
-      "ports": [{"port_id": "in", "direction": "input", "domain": "complex_field"}]
+      "ports": [
+        {"port_id": "in", "direction": "input", "domain": "complex_field"},
+        {"port_id": "intensity", "direction": "output", "domain": "real_intensity"}
+      ]
     }
   ],
   "connections": [
@@ -50,7 +53,7 @@
     {
       "operation_id": "intensity_0",
       "kind": "complex_interference_intensity",
-      "operands": ["src_A.field_value", "src_B.field_value"],
+      "operands": ["intf_0.out"],
       "result": "obs_0.intensity"
     }
   ],
