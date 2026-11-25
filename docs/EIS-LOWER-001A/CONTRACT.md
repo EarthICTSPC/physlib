@@ -14,7 +14,7 @@ The IR describes *what is intended*, not how a particular tool implements it. Ba
 2. **Explicit complex convention:** fields are represented by real and imaginary components; the time-harmonic sign convention and phase-reference identity are declared, never inferred.
 3. **Explicit units:** every dimensional quantity carries a unit. Version 0.1.0 test vectors use dimensionless normalized field amplitudes and dimensionless intensity.
 4. **No implicit normalization:** intensity means squared field magnitude. Detector responsivity, optical power calibration, photon flux, and electrical current are different quantities and are out of scope unless explicitly modeled by a later IR extension.
-5. **No implicit detector model:** the identity |A+B|² is an ideal coherent-field intensity relation, not a balanced-photodetector output claim.
+5. **No implicit detector model:** ideal field intensity is not a balanced-photodetector output claim.
 6. **No silent loss:** a lowerer must report unsupported semantics, approximations, tolerances, and discharged or outstanding obligations.
 7. **Stable provenance:** every IR instance carries an ID, semantic version, source-contract references, and content digest in its evidence record.
 
@@ -49,16 +49,22 @@ Fields with incompatible or undeclared phase references MUST NOT be coherently c
 
 This IR does not prescribe a global sign convention for all future device models. It requires the convention to be explicit and stable within each network.
 
-## 5. Interference operation
+## 5. Field-intensity and interference operations
 
-For complex field amplitudes A and B expressed in the same declared reference frame:
+For a single complex field E:
 
 ```text
-I(A,B) = |A + B|^2
-       = |A|^2 + |B|^2 + 2 Re(A * conjugate(B))
+field_intensity(E) = |E|^2
 ```
 
-The cross term is `2 * Re(A * conjugate(B))`. The ideal intensity operation is deterministic and does not include loss, detector gain, shot noise, thermal noise, saturation, or electrical conversion.
+For two complex field amplitudes A and B expressed in the same declared reference frame:
+
+```text
+complex_interference_intensity(A,B) = |A + B|^2
+                                    = |A|^2 + |B|^2 + 2 Re(A * conjugate(B))
+```
+
+The cross term is `2 * Re(A * conjugate(B))`. The field-sum operation returns the complex field `A+B`; the intensity operation returns a real scalar. The ideal operations are deterministic and do not include loss, detector gain, shot noise, thermal noise, saturation, or electrical conversion.
 
 Equivalent implementations may use complex arithmetic, real-imaginary arithmetic, or a backend-native operation, but must pass the same reference vectors within the declared numerical tolerance.
 
