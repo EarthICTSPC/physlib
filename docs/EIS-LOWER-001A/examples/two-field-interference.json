@@ -1,0 +1,74 @@
+{
+  "schema_version": "0.1.0",
+  "network_id": "EIS-LOWER-001A-EXAMPLE-001",
+  "conventions": {
+    "field_encoding": "complex_re_im",
+    "phasor_convention": "exp(+i*omega*t)",
+    "phase_reference_id": "REF-0",
+    "field_amplitude_unit": "dimensionless_normalized"
+  },
+  "nodes": [
+    {
+      "node_id": "src_A",
+      "kind": "field_source",
+      "ports": [{"port_id": "out", "direction": "output", "domain": "complex_field"}],
+      "field_value": {"re": 1.0, "im": 0.0}
+    },
+    {
+      "node_id": "src_B",
+      "kind": "field_source",
+      "ports": [{"port_id": "out", "direction": "output", "domain": "complex_field"}],
+      "field_value": {"re": 0.0, "im": 1.0}
+    },
+    {
+      "node_id": "intf_0",
+      "kind": "interferometer",
+      "ports": [
+        {"port_id": "in_A", "direction": "input", "domain": "complex_field"},
+        {"port_id": "in_B", "direction": "input", "domain": "complex_field"},
+        {"port_id": "out", "direction": "output", "domain": "complex_field"}
+      ]
+    },
+    {
+      "node_id": "obs_0",
+      "kind": "ideal_intensity_observation",
+      "ports": [{"port_id": "in", "direction": "input", "domain": "complex_field"}]
+    }
+  ],
+  "connections": [
+    {"from_node": "src_A", "from_port": "out", "to_node": "intf_0", "to_port": "in_A"},
+    {"from_node": "src_B", "from_port": "out", "to_node": "intf_0", "to_port": "in_B"},
+    {"from_node": "intf_0", "from_port": "out", "to_node": "obs_0", "to_port": "in"}
+  ],
+  "operations": [
+    {
+      "operation_id": "sum_0",
+      "kind": "complex_field_sum",
+      "operands": ["src_A.field_value", "src_B.field_value"],
+      "result": "intf_0.out"
+    },
+    {
+      "operation_id": "intensity_0",
+      "kind": "complex_interference_intensity",
+      "operands": ["src_A.field_value", "src_B.field_value"],
+      "result": "obs_0.intensity"
+    }
+  ],
+  "assumptions": [
+    {
+      "assumption_id": "ASSUME-COHERENT-REF-0",
+      "statement": "Both input fields are mutually coherent and expressed relative to phase reference REF-0.",
+      "status": "declared"
+    },
+    {
+      "assumption_id": "ASSUME-IDEAL-INTENSITY",
+      "statement": "Observation returns ideal squared field magnitude and excludes detector responsivity, noise, loss, and electrical conversion.",
+      "status": "declared"
+    }
+  ],
+  "provenance": {
+    "source_specifications": [
+      {"specification_id": "EIS-LOWER-001A", "version": "0.1.0"}
+    ]
+  }
+}
