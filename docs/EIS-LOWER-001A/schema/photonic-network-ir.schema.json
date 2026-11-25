@@ -27,10 +27,7 @@
         {"not": {"anyOf": [{"required": ["wavelength"]}, {"required": ["frequency"]}]}}
       ]
     },
-    "nodes": {
-      "type": "array",
-      "items": {"$ref": "#/$defs/node"}
-    },
+    "nodes": {"type": "array", "items": {"$ref": "#/$defs/node"}},
     "connections": {
       "type": "array",
       "items": {
@@ -53,7 +50,7 @@
         "required": ["operation_id", "kind", "operands", "result"],
         "properties": {
           "operation_id": {"type": "string", "minLength": 1},
-          "kind": {"enum": ["complex_interference_intensity", "complex_field_sum", "phase_rotation", "amplitude_phase_map"]},
+          "kind": {"enum": ["complex_interference_intensity", "field_intensity", "complex_field_sum", "phase_rotation", "amplitude_phase_map"]},
           "operands": {"type": "array", "minItems": 1, "items": {"type": "string"}},
           "result": {"type": "string", "minLength": 1},
           "parameters": {"type": "object"}
