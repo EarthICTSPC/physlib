@@ -48,7 +48,7 @@
       "id": "general_complex_pair",
       "A": {"re": 0.5, "im": -0.25},
       "B": {"re": -0.75, "im": 0.5},
-      "expected": {"intensity": 1.8125, "cross_term": -1.0}
+      "expected": {"intensity": 0.125, "cross_term": -1.0}
     }
   ]
 }
