@@ -181,7 +181,7 @@ def build_report(root: Path) -> dict[str, Any]:
                                   "total": len(vector_results),
                                   "results": vector_results},
         },
-        "overall_status": "PASS" if (
+        "overall_status": ("PASS" if structural["pass"] is True else "PASS_WITH_SCHEMA_CHECK_SKIPPED") if (
             not graph_errors
             and all(v["pass"] for v in vector_results)
             and structural["pass"] is not False
@@ -196,7 +196,7 @@ def build_report(root: Path) -> dict[str, Any]:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[3],
+    parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[2],
                         help="repository root (defaults to inferred repository root)")
     parser.add_argument("--output", type=Path, help="optional path for JSON conformance report")
     args = parser.parse_args()
