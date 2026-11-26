@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://earthictspc.com/schemas/photonic-network-ir/0.1.0/schema.json",
+  "title": "EIS PhotonicNetworkIR",
+  "description": "Backend-neutral semantic representation for coherent photonic computational networks.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "network_id", "conventions", "nodes", "connections", "operations", "assumptions", "provenance"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "network_id": {"type": "string", "minLength": 1},
+    "conventions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["field_encoding", "phasor_convention", "phase_reference_id", "field_amplitude_unit"],
+      "properties": {
+        "field_encoding": {"const": "complex_re_im"},
+        "phasor_convention": {"enum": ["exp(+i*omega*t)", "exp(-i*omega*t)"]},
+        "phase_reference_id": {"type": "string", "minLength": 1},
+        "field_amplitude_unit": {"type": "string", "minLength": 1},
+        "wavelength": {"$ref": "#/$defs/quantity"},
+        "frequency": {"$ref": "#/$defs/quantity"}
+      },
+      "oneOf": [
+        {"required": ["wavelength"], "not": {"required": ["frequency"]}},
+        {"required": ["frequency"], "not": {"required": ["wavelength"]}},
+        {"not": {"anyOf": [{"required": ["wavelength"]}, {"required": ["frequency"]}]}}
+      ]
+    },
+    "nodes": {"type": "array", "items": {"$ref": "#/$defs/node"}},
+    "connections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["from_node", "from_port", "to_node", "to_port"],
+        "properties": {
+          "from_node": {"type": "string", "minLength": 1},
+          "from_port": {"type": "string", "minLength": 1},
+          "to_node": {"type": "string", "minLength": 1},
+          "to_port": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "operations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["operation_id", "kind", "operands", "result"],
+        "properties": {
+          "operation_id": {"type": "string", "minLength": 1},
+          "kind": {"enum": ["complex_interference_intensity", "field_intensity", "complex_field_sum", "phase_rotation", "amplitude_phase_map"]},
+          "operands": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+          "result": {"type": "string", "minLength": 1},
+          "parameters": {"type": "object"}
+        }
+      }
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["assumption_id", "statement"],
+        "properties": {
+          "assumption_id": {"type": "string", "minLength": 1},
+          "statement": {"type": "string", "minLength": 1},
+          "status": {"enum": ["declared", "verified", "unresolved"]}
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_specifications"],
+      "properties": {
+        "source_specifications": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["specification_id", "version"],
+            "properties": {
+              "specification_id": {"type": "string", "minLength": 1},
+              "version": {"type": "string", "minLength": 1},
+              "uri": {"type": "string"}
+            }
+          }
+        },
+        "content_digest": {"type": "string"}
+      }
+    }
+  },
+  "$defs": {
+    "quantity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "unit"],
+      "properties": {
+        "value": {"type": "number"},
+        "unit": {"type": "string", "minLength": 1}
+      }
+    },
+    "complex": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["re", "im"],
+      "properties": {
+        "re": {"type": "number"},
+        "im": {"type": "number"}
+      }
+    },
+    "node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["node_id", "kind", "ports"],
+      "properties": {
+        "node_id": {"type": "string", "minLength": 1},
+        "kind": {"enum": ["field_source", "phase_shifter", "amplitude_phase_map", "interferometer", "ideal_intensity_observation"]},
+        "ports": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["port_id", "direction", "domain"],
+            "properties": {
+              "port_id": {"type": "string", "minLength": 1},
+              "direction": {"enum": ["input", "output"]},
+              "domain": {"enum": ["complex_field", "real_intensity"]}
+            }
+          }
+        },
+        "parameters": {"type": "object"},
+        "field_value": {"$ref": "#/$defs/complex"}
+      }
+    }
+  }
+}

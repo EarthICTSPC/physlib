@@ -1,0 +1,54 @@
+{
+  "suite_id": "EIS-LOWER-001A-INTERFERENCE-V1",
+  "schema_version": "0.1.0",
+  "quantity_convention": {
+    "field_amplitude": "dimensionless_normalized",
+    "intensity": "dimensionless_normalized_squared_magnitude",
+    "operation": "I(A,B)=|A+B|^2",
+    "cross_term": "2*Re(A*conjugate(B))",
+    "phase_reference_id": "REF-0",
+    "phasor_convention": "exp(+i*omega*t)",
+    "tolerance": {
+      "absolute": 1e-12,
+      "relative": 1e-12
+    }
+  },
+  "vectors": [
+    {
+      "id": "constructive_equal_phase",
+      "A": {"re": 1.0, "im": 0.0},
+      "B": {"re": 1.0, "im": 0.0},
+      "expected": {"intensity": 4.0, "cross_term": 2.0}
+    },
+    {
+      "id": "destructive_opposite_phase",
+      "A": {"re": 1.0, "im": 0.0},
+      "B": {"re": -1.0, "im": 0.0},
+      "expected": {"intensity": 0.0, "cross_term": -2.0}
+    },
+    {
+      "id": "quadrature",
+      "A": {"re": 1.0, "im": 0.0},
+      "B": {"re": 0.0, "im": 1.0},
+      "expected": {"intensity": 2.0, "cross_term": 0.0}
+    },
+    {
+      "id": "unequal_complex_amplitudes",
+      "A": {"re": 2.0, "im": 0.0},
+      "B": {"re": 1.0, "im": 1.0},
+      "expected": {"intensity": 10.0, "cross_term": 4.0}
+    },
+    {
+      "id": "zero_first_field",
+      "A": {"re": 0.0, "im": 0.0},
+      "B": {"re": 3.0, "im": 4.0},
+      "expected": {"intensity": 25.0, "cross_term": 0.0}
+    },
+    {
+      "id": "general_complex_pair",
+      "A": {"re": 0.5, "im": -0.25},
+      "B": {"re": -0.75, "im": 0.5},
+      "expected": {"intensity": 0.125, "cross_term": -1.0}
+    }
+  ]
+}

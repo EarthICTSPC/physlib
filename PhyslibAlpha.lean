@@ -881,3 +881,4 @@ public import PhyslibAlpha.SpaceAndTime.SpaceTime.SpaceTimeAlgebra.Matrix
 public import PhyslibAlpha.SpaceAndTime.SpaceTime.SpaceTimeAlgebra.Taylor
 public import PhyslibAlpha.SpaceAndTime.SpaceTime.SpaceTimeDerivAlgebra
 public import PhyslibAlpha.SpaceAndTime.Time.CaesiumClock
+public import PhyslibAlpha.Optics.Interference
